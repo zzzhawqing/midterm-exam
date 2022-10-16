@@ -1,0 +1,42 @@
+---
+title: '03'
+author: "Wenqing Zha"
+date: '2022-10-16'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load libraries
+```{r}
+pacman::p_load(foreign, haven, ggplot2, dplyr, readr)
+```
+
+## Read in csv file
+```{r}
+titanic <- read.csv("https://raw.githubusercontent.com/kijohnson/Data/main/titanic.csv")
+```
+
+## determine the median age for by passenger class
+```{r}
+titanic %>%
+group_by(Pclass)%>% 
+summarise(Median=median(Age))
+```
+
+## a pot that shows medians, spread of data, and outliers for the continuous variable afe according to passenger class
+```{r}
+titanic$Pclass <- as.factor(titanic$Pclass)
+
+plot <- ggplot(data = titanic, aes(x = Pclass, y = Age)) +
+  geom_boxplot() +
+  labs(x = "Passenger class", y = "Age",  title = "Boxplot")
+```
+## save the picture of your plot
+```{r}
+ggsave(filename = "Plot.pdf", plot = plot,
+       width = 4, height = 4, units = "in", bg="white") 
+```
+
