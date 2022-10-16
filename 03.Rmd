@@ -40,3 +40,11 @@ ggsave(filename = "Plot.pdf", plot = plot,
        width = 4, height = 4, units = "in", bg="white") 
 ```
 
+## for question 4, the percentage of males and females by class
+```{r}
+titanic %>% 
+  group_by(Pclass, Sex) %>% 
+  summarise(Percentage=n()/nrow(.))
+```
+
+
