@@ -32,19 +32,32 @@ titanic$Pclass <- as.factor(titanic$Pclass)
 
 plot <- ggplot(data = titanic, aes(x = Pclass, y = Age)) +
   geom_boxplot() +
+  geom_jitter(width = 0.2, alpha = 0.3, color = "orange") +
   labs(x = "Passenger class", y = "Age",  title = "Boxplot")
 ```
 ## save the picture of your plot
 ```{r}
-ggsave(filename = "Plot.pdf", plot = plot,
+ggsave(filename = "Plot2.pdf", plot = plot,
        width = 4, height = 4, units = "in", bg="white") 
 ```
 
 ## for question 4, the percentage of males and females by class
 ```{r}
 titanic %>% 
+  group_by(Pclass) %>% 
+  summarise(num_by_class = n()) -> t_class
+
+t_class
+
+titanic %>% 
   group_by(Pclass, Sex) %>% 
-  summarise(Percentage=n()/nrow(.))
+  summarise(num_of_sex_by_class = n()) -> t_sex
+
+titanic_byClass <- full_join(t_class, t_sex, by = "Pclass")
+titanic_byClass
+
+titanic_byClass %>%  
+  mutate(percentage = ((Percentage=num_of_sex_by_class/num_by_class)*100))
 ```
 
 
